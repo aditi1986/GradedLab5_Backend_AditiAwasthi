@@ -24,17 +24,26 @@ public class EmployeeController {
 
 	@GetMapping("/listEmployees")
 	public String viewallEmployees(Model model) {
+		System.out.println("View All ");
 		List<Employee> viewallEmployees = this.employeeservice.viewAllEmployee();
 		model.addAttribute("viewallEmployees", viewallEmployees);
 		return "employee/list-employees";
 
 	}
 
-	@PostMapping("/saveEmployees")
+	@PostMapping("/saveEmployee")
 	public String saveEmployee(@ModelAttribute("employee") Employee employee) {
 		this.employeeservice.saveEmployee(employee);
+		System.out.println(employee);
 		return "redirect:/employees/listEmployees";
 
+	}
+	
+	@PostMapping("/showFormForUpdate")
+	public String showFormForUpdate(@RequestParam("id") int id, Model model) {
+		Employee foundEmployee = employeeservice.findbyid(id);
+		model.addAttribute("employee", foundEmployee);
+		return "employee/employee-form";
 	}
 
 	@PutMapping("/updateEmployee/{id}")
@@ -48,6 +57,7 @@ public class EmployeeController {
 	public String showFormForAdd(Model model) {
 		Employee employee = new Employee();
 		model.addAttribute("employee", employee);
+		System.out.println(employee.toString());
 		return "employee/employee-form";
 	}
 }
